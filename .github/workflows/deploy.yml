@@ -10,31 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout (for SSH-agent)
         uses: actions/checkout@v3
 
-      - name: Set up SSH
+      - name: Start the SSH-agent
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add VPS fingerprint
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Rsync files to VPS
-        run: |
-          rsync -az --delete \
-            --exclude=".env" \
-            --exclude="grafana/" \
-            --exclude="influxdb/" \
-            --exclude="mosquitto/data/" \
-            --exclude="mosquitto/log/" \
-            ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/var/www/1dv027/iot
-
-
-      - name: Run Docker Compose on VPS
+      - name: Deploy IoT stack via git pull
         run: |
           ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+            set -e
+            mkdir -p /var/www/1dv027/iot
             cd /var/www/1dv027/iot
+
+            if [ ! -d ".git" ]; then
+              git init
+              git remote add origin git@github.com:MarkerAnn/iot-server.git
+              git fetch origin
+              git checkout -b main origin/main
+            else
+              git pull origin main
+            fi
+
             docker compose pull
             docker compose down
             docker compose up -d
