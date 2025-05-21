@@ -36,6 +36,7 @@ jobs:
               git fetch origin
               git checkout -b main origin/main
             else
+              git remote set-url origin git@github.com:MarkerAnn/1dv027_IoT_server.git
               git pull origin main
             fi
 
