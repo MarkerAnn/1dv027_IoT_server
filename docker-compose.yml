@@ -35,6 +35,8 @@ services:
     depends_on:
       - mqtt
       - influxdb
+    env_file:
+      - .env
     volumes:
       - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
     restart: unless-stopped
@@ -46,4 +48,6 @@ services:
       - "3000:3000"
     volumes:
       - ./grafana:/var/lib/grafana
+    environment:
+    - GF_SERVER_ROOT_URL=https://angelicamarker.online/1dv027/iot/grafana/
     restart: unless-stopped
