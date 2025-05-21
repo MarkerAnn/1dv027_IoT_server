@@ -24,7 +24,12 @@ jobs:
         run: |
           rsync -az --delete \
             --exclude=".env" \
+            --exclude="grafana/" \
+            --exclude="influxdb/" \
+            --exclude="mosquitto/data/" \
+            --exclude="mosquitto/log/" \
             ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/var/www/1dv027/iot
+
 
       - name: Run Docker Compose on VPS
         run: |
