@@ -9,6 +9,7 @@ Monitor air and soil conditions using a **Raspberry Pi Pico WH**, stream sensor 
 
 * **Grafana Dashboard**: [angelicamarker.online/1dv027/iot/grafana](https://angelicamarker.online/1dv027/iot/grafana)
 * **InfluxDB UI**: [influx.angelicamarker.online](https://influx.angelicamarker.online)
+* **Device Code**: [GitHub](https://github.com/MarkerAnn/1dv027_iot_device)
 
 ---
 
@@ -134,9 +135,7 @@ Telegraf will pick it up and forward it to InfluxDB.
 
 ---
 
-### 📈 Grafana Dashboard (Coming Soon)
-
-Create a new dashboard at:
+### 📈 Grafana Dashboard
 
 ➡️ `https://angelicamarker.online/1dv027/iot/grafana`
 
@@ -144,5 +143,11 @@ Create a new dashboard at:
 * **Query**: From `sensor-data` bucket
 * Panels: CO₂ level, temperature, humidity, soil moisture
 
+![Grafana Dashboard Screenshot](./images/grafana.png)
+
 ---
+
+## 📜 License
+
+MIT © 2025 Angelica Marker
 
